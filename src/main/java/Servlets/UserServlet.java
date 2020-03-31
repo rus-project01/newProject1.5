@@ -10,12 +10,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.UserDAO;
+import dao.UserHibernateDAO;
 import model.User;
 import service.UserService;
 import util.DBHelper;
 
 @WebServlet("/serv/*")
 public class UserServlet extends HttpServlet {
+        UserService userService = UserService.getInstance();
+
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             List<User> user = UserService.getInstance().getAllUsers();
@@ -28,7 +32,7 @@ public class UserServlet extends HttpServlet {
             String name = req.getParameter("name");
             String password = req.getParameter("password");
             Long money = Long.parseLong(req.getParameter("money"));
-            UserService.getInstance().addUser(new User(name, password, money));
+            userService.addUser(new User(name, password, money));
             req.setAttribute("user", UserService.getInstance().getAllUsers());
             getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
         }

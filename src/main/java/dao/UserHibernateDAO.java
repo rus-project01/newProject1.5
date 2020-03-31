@@ -1,49 +1,48 @@
 package dao;
 import model.*;
-import javax.persistence.EntityManager;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.EntityMode;
-import util.DBHelper;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.List;
 
-public class UserHibernateDAO {
-    private Session session;
 
-    public UserHibernateDAO(Session session) {
-        this.session = session;
+public class UserHibernateDAO implements UserDAO {
+    private SessionFactory sessionFactory;
+
+    public UserHibernateDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     public List<User> getAllUsers() {
-        Transaction transaction = session.beginTransaction();
+        Session session = sessionFactory.openSession();
         List<User> cars = session.createQuery("FROM User").list();
-        transaction.commit();
         session.close();
         return cars;
     }
 
-    public void deleteUser(Long id) throws SQLException {
+    public void deleteUser(Long id) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from User where id = :id");
         query.setParameter("id", id);
         List<User> cars = query.list();
         session.delete(cars.get(0));
         transaction.commit();
+        session.close();
     }
 
     public void addUser(User user) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(user);
+        session.save(user);
         transaction.commit();
+        session.close();
     }
 
-    public void update(User user) {
+    public void updateUser(User user) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("update User set password = :password, money = :money where name = :name");
         query.setParameter("password", user.getPassword());
@@ -51,14 +50,17 @@ public class UserHibernateDAO {
         query.setParameter("name", user.getName());
         query.executeUpdate();
         transaction.commit();
+        session.close();
     }
 
-    public boolean checkUser(User user) {
+    public boolean checkUserByName(User user) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from User where name = :name");
         query.setParameter("name", user.getName());
         List<User> cars = query.list();
         transaction.commit();
+        session.close();
         return cars.size() == 0;
     }
 }

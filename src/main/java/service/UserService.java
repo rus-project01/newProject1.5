@@ -7,54 +7,52 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.UserDAO;
 import dao.UserHibernateDAO;
 import model.User;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import util.DBHelper;
 
 public class UserService {
 
+    private UserDAO dao;
     private static UserService userService;
-
-    private SessionFactory sessionFactory;
-
-    public UserService(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     public static UserService getInstance() {
         if (userService == null) {
-            userService = new UserService(DBHelper.getSessionFactory());
+            userService = new UserService();
+            userService.setDao(new UserHibernateDAO(DBHelper.getSessionFactory()));
         }
         return userService;
     }
 
+    public void setDao(UserDAO dao) {
+        this.dao = dao;
+    }
+
     public void addUser(User user) {
-        if(checkUser(user)) {
-            new UserHibernateDAO(sessionFactory.openSession()).addUser(user);
+        if(checkUserByName(user)) {
+            dao.addUser(user);
         } else {
-            userService.update(user);
+            updateUser(user);
         }
     }
 
-    public void update(User user) {
-        new UserHibernateDAO(sessionFactory.openSession()).update(user);
+    public void updateUser(User user) {
+        dao.updateUser(user);
     }
 
     public void deleteUser(Long id) {
-        try {
-            new UserHibernateDAO(sessionFactory.openSession()).deleteUser(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        dao.deleteUser(id);
     }
 
     public List<User> getAllUsers() {
-        return new UserHibernateDAO(sessionFactory.openSession()).getAllUsers();
+        return dao.getAllUsers();
     }
 
-    public boolean checkUser(User user) {
-        return new UserHibernateDAO(sessionFactory.openSession()).checkUser(user);
+    public boolean checkUserByName(User user) {
+        return dao.checkUserByName(user);
     }
 
 }

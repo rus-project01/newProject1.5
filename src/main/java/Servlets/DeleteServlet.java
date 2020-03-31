@@ -13,11 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
-    UserService servletUser = new UserService(DBHelper.getSessionFactory());
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
-        servletUser.deleteUser(id);
+        UserService.getInstance().deleteUser(id);
         response.sendRedirect("/serv");
     }
 }  
