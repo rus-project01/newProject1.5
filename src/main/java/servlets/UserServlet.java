@@ -19,7 +19,6 @@ public class UserServlet extends HttpServlet {
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            userService.setDao(new UserHibernateDAO(DBHelper.getSessionFactory()));
             List<User> user = userService.getAllUsers();
             req.setAttribute("user", user);
             getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
@@ -30,7 +29,6 @@ public class UserServlet extends HttpServlet {
             String name = req.getParameter("name");
             String password = req.getParameter("password");
             Long money = Long.parseLong(req.getParameter("money"));
-            userService.setDao(new UserHibernateDAO(DBHelper.getSessionFactory()));
             userService.addUser(new User(name, password, money));
             req.setAttribute("user", userService.getAllUsers());
             getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);

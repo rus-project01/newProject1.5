@@ -11,10 +11,6 @@ public class UserJdbcDAO implements UserDAO {
 
     private Connection connection;
 
-    public UserJdbcDAO (Connection connection) {
-        this.connection = connection;
-    }
-
     public void addUser(User user) {
         try {
             PreparedStatement ps = connection.prepareStatement("insert into users(name, password, money) values (?, ?, ?)");

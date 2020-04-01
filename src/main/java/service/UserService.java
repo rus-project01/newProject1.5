@@ -16,7 +16,7 @@ import util.DBHelper;
 
 public class UserService {
 
-    private UserDAO dao;
+    private UserDAO dao = new UserHibernateDAO();
     private static UserService userService;
 
     public static UserService getInstance() {
