@@ -6,10 +6,11 @@ import java.util.List;
 
 import dao.UserDAO;
 import model.User;
+import util.ConnectionJDBC;
 
 public class UserJdbcDAO implements UserDAO {
 
-    private Connection connection;
+    private Connection connection = ConnectionJDBC.getSessionFactory();
 
     public void addUser(User user) {
         try {
@@ -79,12 +80,7 @@ public class UserJdbcDAO implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return user.getId() == null;
+        return user.getName() == null;
     }
 
-    public void createTable() throws SQLException {
-        Statement stmt = connection.createStatement();
-        stmt.execute("create table if not exists Users (id bigint auto_increment, name varchar(256), password varchar(256), money bigint, primary key (id))");
-        stmt.close();
-    }
 }

@@ -10,16 +10,17 @@ import java.util.List;
 
 
 public class UserHibernateDAO implements UserDAO {
+    private SessionFactory sessionFactory = DBHelper.getSessionFactory();
 
     public List<User> getAllUsers() {
-        Session session = DBHelper.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         List<User> cars = session.createQuery("FROM User").list();
         session.close();
         return cars;
     }
 
     public void deleteUser(Long id) {
-        Session session = DBHelper.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from User where id = :id");
         query.setParameter("id", id);
@@ -30,7 +31,7 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     public void addUser(User user) {
-        Session session = DBHelper.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(user);
         transaction.commit();
@@ -38,7 +39,7 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     public void updateUser(User user) {
-        Session session = DBHelper.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("update User set password = :password, money = :money where name = :name");
         query.setParameter("password", user.getPassword());
@@ -50,7 +51,7 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     public boolean checkUserByName(User user) {
-        Session session = DBHelper.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from User where name = :name");
         query.setParameter("name", user.getName());

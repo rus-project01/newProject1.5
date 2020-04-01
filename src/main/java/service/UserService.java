@@ -9,6 +9,7 @@ import java.util.List;
 
 import dao.UserDAO;
 import dao.UserHibernateDAO;
+import dao.UserJdbcDAO;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,7 +17,7 @@ import util.DBHelper;
 
 public class UserService {
 
-    private UserDAO dao = new UserHibernateDAO();
+    private UserDAO dao = new UserJdbcDAO();
     private static UserService userService;
 
     public static UserService getInstance() {
@@ -24,10 +25,6 @@ public class UserService {
             userService = new UserService();
         }
         return userService;
-    }
-
-    public void setDao(UserDAO dao) {
-        this.dao = dao;
     }
 
     public void addUser(User user) {
@@ -53,5 +50,4 @@ public class UserService {
     public boolean checkUserByName(User user) {
         return dao.checkUserByName(user);
     }
-
 }
