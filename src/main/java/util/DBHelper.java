@@ -17,7 +17,7 @@ public class DBHelper {
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
-            sessionFactory = createSessionFactory();
+            sessionFactory = getConfiguration();
         }
         return sessionFactory;
     }
@@ -45,7 +45,7 @@ public class DBHelper {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    private static SessionFactory createSessionFactory() {
+    private static SessionFactory getConfiguration() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");

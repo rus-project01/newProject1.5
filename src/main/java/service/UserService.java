@@ -14,10 +14,11 @@ import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import util.DBHelper;
+import util.UserDaoFactory;
 
 public class UserService {
 
-    private UserDAO dao = new UserJdbcDAO();
+    private UserDAO dao = new UserDaoFactory().daoClass();
     private static UserService userService;
 
     public static UserService getInstance() {

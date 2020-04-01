@@ -68,6 +68,7 @@ public class UserJdbcDAO implements UserDAO {
     }
 
     public boolean checkUserByName(User user)  {
+        List<User> list = new ArrayList<>();
         User users = new User();
         PreparedStatement ps = null;
         try {
@@ -76,11 +77,12 @@ public class UserJdbcDAO implements UserDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 users.setName(rs.getString("name"));
+                list.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return user.getName() == null;
+        return list.size() == 0;
     }
 
 }
