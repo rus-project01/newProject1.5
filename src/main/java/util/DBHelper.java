@@ -22,7 +22,7 @@ public class DBHelper {
         return sessionFactory;
     }
 
-    private static Connection getConnection() {
+    public static Connection getConnection() {
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
             StringBuilder url = new StringBuilder();

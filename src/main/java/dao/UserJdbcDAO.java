@@ -6,11 +6,11 @@ import java.util.List;
 
 import dao.UserDAO;
 import model.User;
-import util.ConnectionJDBC;
+import util.DBHelper;
 
 public class UserJdbcDAO implements UserDAO {
 
-    private Connection connection = ConnectionJDBC.getSessionFactory();
+    private Connection connection = DBHelper.getConnection();
 
     public void addUser(User user) {
         try {
