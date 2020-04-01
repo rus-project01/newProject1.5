@@ -26,10 +26,6 @@ public class UserService {
         return userService;
     }
 
-    public void setDao(UserDAO dao) {
-        this.dao = dao;
-    }
-
     public void addUser(User user) {
         if(checkUserByName(user)) {
             dao.addUser(user);
