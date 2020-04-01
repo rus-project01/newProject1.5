@@ -22,7 +22,6 @@ public class UserService {
     public static UserService getInstance() {
         if (userService == null) {
             userService = new UserService();
-            userService.setDao(new UserHibernateDAO(DBHelper.getSessionFactory()));
         }
         return userService;
     }

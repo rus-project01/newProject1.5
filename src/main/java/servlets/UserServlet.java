@@ -1,4 +1,4 @@
-package Servlets;
+package servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -6,11 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import dao.UserDAO;
 import dao.UserHibernateDAO;
 import model.User;
 import service.UserService;
@@ -22,7 +19,8 @@ public class UserServlet extends HttpServlet {
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            List<User> user = UserService.getInstance().getAllUsers();
+            userService.setDao(new UserHibernateDAO(DBHelper.getSessionFactory()));
+            List<User> user = userService.getAllUsers();
             req.setAttribute("user", user);
             getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
         }
@@ -32,8 +30,9 @@ public class UserServlet extends HttpServlet {
             String name = req.getParameter("name");
             String password = req.getParameter("password");
             Long money = Long.parseLong(req.getParameter("money"));
+            userService.setDao(new UserHibernateDAO(DBHelper.getSessionFactory()));
             userService.addUser(new User(name, password, money));
-            req.setAttribute("user", UserService.getInstance().getAllUsers());
+            req.setAttribute("user", userService.getAllUsers());
             getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
         }
 }

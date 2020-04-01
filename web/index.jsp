@@ -31,6 +31,7 @@
 </form>
 
 <h1 border ="1" width="500" align="center">Users List</h1>
+<%--<c:forEach items="${user}" var="qwe"><h1>${qwe.id}</h1></c:forEach>--%>
 <%
   ArrayList<User> list = (ArrayList<User>)request.getAttribute("user");
   for(User users: list){
