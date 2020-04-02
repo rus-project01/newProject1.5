@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class UserDaoFactory {
     public UserDAO daoClass() {
-        switch (ReaderFile.read()) {
+        switch (ReaderFile.readDaoType()) {
             case "UserHibernateDAO": return new UserHibernateDAO();
             case "UserJdbcDAO": return new UserJdbcDAO();
             default: throw new IllegalStateException("Ошибка при инициилизации класса");

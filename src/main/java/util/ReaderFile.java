@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class ReaderFile {
-    public static String read() {
+    public static String readDaoType() {
         Properties properties = new Properties();
         InputStream in;
         try {
