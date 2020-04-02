@@ -12,7 +12,7 @@ public class UserDaoFactory {
         switch (ReaderFile.read()) {
             case "UserHibernateDAO": return new UserHibernateDAO();
             case "UserJdbcDAO": return new UserJdbcDAO();
-            default: return new UserHibernateDAO();
+            default: throw new IllegalStateException("Ошибка при инициилизации класса");
         }
     }
 }
