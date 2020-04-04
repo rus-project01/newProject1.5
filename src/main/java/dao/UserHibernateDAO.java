@@ -41,16 +41,29 @@ public class UserHibernateDAO implements UserDAO {
     public void updateUser(User user) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("update User set password = :password, money = :money where name = :name");
+        Query query = session.createQuery("update User set password = :password, money = :money, role = :role where name = :name");
         query.setParameter("password", user.getPassword());
         query.setLong("money", user.getMoney());
+        query.setParameter("role", user.getRole());
         query.setParameter("name", user.getName());
         query.executeUpdate();
         transaction.commit();
         session.close();
     }
 
-    public boolean checkUserByName(User user) {
+    public boolean existUser(User user) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from User where name = :name and password = :password");
+        query.setParameter("name", user.getName());
+        query.setParameter("password", user.getPassword());
+        List<User> cars = query.list();
+        transaction.commit();
+        session.close();
+        return cars.size() == 0;
+    }
+
+    public User checkUserByName(User user) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from User where name = :name");
@@ -58,6 +71,6 @@ public class UserHibernateDAO implements UserDAO {
         List<User> cars = query.list();
         transaction.commit();
         session.close();
-        return cars.size() == 0;
+        return cars.get(0);
     }
 }

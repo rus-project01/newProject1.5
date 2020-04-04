@@ -15,9 +15,16 @@ public class User {
     private String password;
     @Column(name = "money")
     private Long money;
+    @Column(name = "role")
+    private String role;
 
     public User() {
 
+    }
+
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
     }
 
     public User(String name, String password, Long money) {
@@ -26,11 +33,32 @@ public class User {
         this.money = money;
     }
 
+    public User(String name, String password, String role) {
+        this.name = name;
+        this.password = password;
+        this.role = role;
+    }
+
     public User(Long id, String name, String password, Long money) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.money = money;
+    }
+
+    public User(String name, String password, Long money, String role) {
+        this.name = name;
+        this.password = password;
+        this.money = money;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Long getId() {

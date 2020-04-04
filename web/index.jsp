@@ -6,7 +6,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Student List</title>
+  <title>Users List</title>
 </head>
 <body>
 <%
@@ -14,9 +14,10 @@
   String name = request.getParameter("name");
   String password = request.getParameter("password");
   String money = request.getParameter("money");
+  String role = request.getParameter("role");
 %>
 <h1>Create / Edit Form</h1>
-<form action="/serv" method="post">
+<form action="/admin" method="post">
   <input type="hidden" name="id" value="<%=id%>"/>
   <table>
     <tr><td>Name:</td><td>
@@ -25,15 +26,20 @@
       <input type="password" name="password" value="<%=password%>"/></td></tr>
     <tr><td>Money:</td><td>
       <input type="text" name="money" value="<%=money%>"/></td></tr>
+    <tr><td>Role :</td><td>
+      <input type="text" name="role" value="<%=role%>"/></td></tr>
     </td></tr>
     <tr><td colspan="2"><input type="submit" value="Create / Edit User"/></td></tr>
   </table>
 </form>
-
+<form action="/login" method="post">
+  <h1>If you want to leave this website, push: </h1>
+  <tr><td colspan="2"><input type="submit" value="Logout"/></td></tr>
+</form>
 <h1 border ="1" width="500" align="center">Users List</h1>
 <%--<c:forEach items="${user}" var="qwe"><h1>${qwe.id}</h1></c:forEach>--%>
 <%
-  ArrayList<User> list = (ArrayList<User>)request.getAttribute("user");
+  ArrayList<User> list = (ArrayList<User>)request.getSession().getAttribute("user");
   for(User users: list){
 %>
 <table border ="1" width="500" align="center">
@@ -42,6 +48,7 @@
     <th><b>Name</b></th>
     <th><b>Password</b></th>
     <th><b>Money</b></th>
+    <th><b>Role</b></th>
     <th><b>DeleteAction</b></th>
   </tr>
   <tr>
@@ -49,6 +56,7 @@
     <td><%= users.getName() %></td>
     <td><%= users.getPassword() %></td>
     <td><%= users.getMoney() %> рублей</td>
+    <td><%= users.getRole() %></td>
     <td><a href="/delete?id=<%=users.getId()%>">Delete</a></td>
   </tr>
   <%}%>

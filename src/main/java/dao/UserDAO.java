@@ -15,6 +15,8 @@ public interface UserDAO {
 
     List<User> getAllUsers();
 
-    boolean checkUserByName(User user);
+    User checkUserByName(User user);
+
+    boolean existUser(User user);
 
 }

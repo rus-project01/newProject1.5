@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public void addUser(User user) {
-        if(checkUserByName(user)) {
+        if(existUser(user)) {
             dao.addUser(user);
         } else {
             updateUser(user);
@@ -40,6 +40,10 @@ public class UserService {
         dao.updateUser(user);
     }
 
+    public boolean existUser(User user) {
+        return dao.existUser(user);
+    }
+
     public void deleteUser(Long id) {
         dao.deleteUser(id);
     }
@@ -48,7 +52,7 @@ public class UserService {
         return dao.getAllUsers();
     }
 
-    public boolean checkUserByName(User user) {
+    public User checkUserByName(User user) {
         return dao.checkUserByName(user);
     }
 }

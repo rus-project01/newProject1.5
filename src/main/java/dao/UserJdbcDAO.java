@@ -36,11 +36,12 @@ public class UserJdbcDAO implements UserDAO {
 
     public void updateUser(User user) {
         try {
-            PreparedStatement ps = connection.prepareStatement("update users set name=?, password=?, money=? where name=?");
+            PreparedStatement ps = connection.prepareStatement("update users set name=?, password=?, money=?, role=? where name=?");
             ps.setString(1, user.getName());
             ps.setString(2, user.getPassword());
             ps.setLong(3, user.getMoney());
-            ps.setString(4, user.getName());
+            ps.setString(4, user.getRole());
+            ps.setString(5, user.getName());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,13 +68,34 @@ public class UserJdbcDAO implements UserDAO {
         return users;
     }
 
-    public boolean checkUserByName(User user)  {
-        List<User> list = new ArrayList<>();
+    public User checkUserByName(User user)  {
         User users = new User();
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("select * from users where name=?");
             ps.setString(1, user.getName());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                users.setId(rs.getLong("id"));
+                users.setName(rs.getString("name"));
+                users.setPassword(rs.getString("password"));
+                users.setMoney(rs.getLong("money"));
+                users.setRole(rs.getString("role"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public boolean existUser(User user)  {
+        List<User> list = new ArrayList<>();
+        User users = new User();
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("select * from users where name=?, password=?");
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getPassword());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 users.setName(rs.getString("name"));
